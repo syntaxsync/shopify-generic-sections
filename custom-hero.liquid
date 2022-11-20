@@ -1,0 +1,362 @@
+<div class="custom--hero-wrapper">
+  <style data-shopify="">
+    .custom--hero-natural--template--{{ section.id }} {
+      height: 0;
+      padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+      position: relative;
+    }
+
+    @media screen and (max-width: 768px) {
+      .custom--hero-natural--template--{{ section.id }} {
+        padding-bottom: {{ 1 | divided_by: section.settings.image_mobile.aspect_ratio | times: 100 }}%;
+      }
+    }
+  </style>
+
+  <div class="custom--hero-natural--template--{{ section.id }}">
+    <div class="custom--hero custom--hero--template--{{ section.id }} loaded" data-natural="true">
+      <div class="custom-custom--hero-wrapper">
+        <div class="custom--hero__image-wrapper custom--hero__image-wrapper--overlay loaded">
+          <img
+            loading="lazy"
+            class="custom--hero__image small--hide lazyautosizes lazyloaded"
+            alt="{{ section.settings.image.alt | escape }}"
+            src="{{ section.settings.image | img_url: 'master' }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+          >
+          <img
+            loading="lazy"
+            class="custom--hero__image medium-up--hide lazyautosizes lazyloaded"
+            alt="{{ section.settings.image_mobile.alt | escape }}"
+            src="{{ section.settings.image_mobile | img_url: 'master' }}"
+            width="{{ section.settings.image_mobile.width }}"
+            height="{{ section.settings.image_mobile.height }}"
+          >
+        </div>
+        <div class="custom--hero__text-wrap">
+          <div class="page-width">
+            <div class="custom--hero__text-content vertical-center horizontal-left">
+              <div class="custom--hero__text-shadow aos-init aos-animate" data-aos="">
+                {% if section.settings.title %}
+                  <h2 class="h1 custom--hero__title">
+                    {{ section.settings.title }}
+                  </h2>
+                {% endif %}
+                {% if section.settings.description %}
+                  <div class="custom--hero__subtitle">
+                    {{ section.settings.description }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom custom--Hero",
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom custom--Hero",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  :root {
+    --typeBaseSize: 16px;
+    --colorcustom--HeroText: #ffffff;
+    --colorImageOverlay: #000000;
+    --colorImageOverlayOpacity: 0.1;
+    --colorImageOverlayTextShadow: 0.2;
+  }
+
+  @keyframes placeholder-shimmer {
+    0% {
+      background-position: -150% 0;
+    }
+    to {
+      background-position: 150% 0;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .small--show {
+      display: block !important;
+    }
+    .small--hide {
+      display: none !important;
+    }
+    .small--text-left {
+      text-align: left !important;
+    }
+    .small--text-right {
+      text-align: right !important;
+    }
+    .small--text-center {
+      text-align: center !important;
+    }
+  }
+
+  @media only screen and (min-width: 769px) {
+    .medium-up--show {
+      display: block !important;
+    }
+    .medium-up--hide {
+      display: none !important;
+    }
+    .medium-up--text-left {
+      text-align: left !important;
+    }
+    .medium-up--text-right {
+      text-align: right !important;
+    }
+    .medium-up--text-center {
+      text-align: center !important;
+    }
+  }
+
+  @media only screen and (min-width: 1550px) {
+    .widescreen--show {
+      display: block !important;
+    }
+    .widescreen--hide {
+      display: none !important;
+    }
+    .widescreen--text-left {
+      text-align: left !important;
+    }
+    .widescreen--text-right {
+      text-align: right !important;
+    }
+    .widescreen--text-center {
+      text-align: center !important;
+    }
+  }
+
+  .custom--hero {
+    position: relative;
+    overflow: hidden;
+    animation: placeholder-shimmer 1.3s linear 0.5s infinite;
+    background-size: 300% 100%;
+  }
+
+  .custom--hero.loaded {
+    animation: none;
+  }
+
+  .custom--hero__text-shadow {
+    position: relative;
+    display: inline-block;
+    transform: translateZ(0);
+  }
+
+  .custom--hero__text-shadow > * {
+    position: relative;
+  }
+
+  .custom--hero__text-shadow:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: auto;
+    background: radial-gradient(rgba(0, 0, 0, 0.2) 0%, transparent 60%);
+    background: radial-gradient(rgba(0, 0, 0, var(--colorImageOverlayTextShadow)) 0%, transparent 60%);
+    margin: -100px -200px -100px -200px;
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.04, 0, 0.2, 1) 0.3s;
+  }
+
+  .custom--hero__text-shadow.aos-animate:before {
+    opacity: 1;
+  }
+
+  .custom--hero__image-wrapper,
+  .custom--hero__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .custom--hero__image-wrapper--overlay:before,
+  .custom--hero__media--overlay:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    background-color: #000000;
+    background-color: var(--colorImageOverlay);
+    opacity: 0.1;
+    opacity: var(--colorImageOverlayOpacity);
+  }
+
+  .custom--hero__image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    -o-object-fit: cover;
+    object-fit: cover;
+    font-family: 'object-fit: cover';
+  }
+
+  .custom--hero__text-wrap {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: #ffffff;
+    color: var(--colorcustom--HeroText);
+  }
+
+  .custom--hero__text-content {
+    position: relative;
+    padding: 35px 0;
+    z-index: 4;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .custom--hero__text-content {
+      padding: 60px 0;
+    }
+  }
+
+  .custom--hero__title {
+    display: block;
+    margin-bottom: 0;
+    font-size: 40px;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .custom--hero__title {
+      font-size: 80px;
+    }
+  }
+
+  .custom--hero__subtitle {
+    font-size: calc(var(--typeBaseSize) * 1.22 * 0.85);
+  }
+
+  @media only screen and (min-width: 769px) {
+    .custom--hero__subtitle {
+      font-size: calc(var(--typeBaseSize) * 1.22);
+    }
+  }
+
+  .custom--hero__subtitle {
+    vertical-align: middle;
+    margin-top: 5px;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .custom--hero__subtitle {
+      display: inline-block;
+      margin-top: 12px;
+      margin-right: 20px;
+    }
+  }
+
+  .custom--hero__text-content {
+    display: table-cell;
+  }
+
+  .custom--hero__text-content.horizontal-left {
+    text-align: left;
+    padding-right: 10%;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .custom--hero__text-content.horizontal-left {
+      padding-right: 33% !important;
+    }
+  }
+
+  .custom--hero__text-content.horizontal-left {
+    text-align: left;
+    padding-right: 10%;
+  }
+
+  .custom--hero__text-content.vertical-center {
+    vertical-align: middle;
+    padding-top: 50px;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .custom--hero__text-content.vertical-center {
+      padding-top: 90px;
+    }
+  }
+
+  .custom--hero__text-content.vertical-center .custom--hero__subtitle {
+    margin-right: 0;
+  }
+
+  .custom--hero[data-natural] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .page-width {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .page-full,
+  .page-width {
+    padding: 0 30px;
+  }
+
+  .custom--hero__text-wrap .page-width {
+    display: table;
+    width: auto;
+    height: 100%;
+  }
+
+  .custom-custom--hero-wrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+</style>

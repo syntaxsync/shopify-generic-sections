@@ -5,7 +5,7 @@
         loading="lazy"
         class="feature-row__image tw-absolute tw-w-full tw-h-full tw-inset-0 tw-object-cover tw-object-center lazyautosizes lazyloaded"
         alt="{{ section.settings.image.alt | escape }}"
-        src="{{ section.settings.image.src }}"
+        src="{{ section.settings.image  | img_url: 'master' }}"
         width="{{ image.width }}"
         height="{{ image.height }}"
       >
@@ -40,7 +40,7 @@
               <div itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
                 <button
                   type="button"
-                  class="collapsible-trigger collapsible-trigger--inline collapsible--auto-height text-left {% if block.settings.open %}is-open{% endif %}"
+                  class="collapsible-trigger collapsible-trigger--{{section.id}} collapsible-trigger--inline collapsible--auto-height text-left {% if block.settings.open %}is-open{% endif %}"
                   aria-controls="FAQ-content-{{ block.id }}"
                   aria-expanded="{{ block.settings.open }}"
                 >
@@ -174,7 +174,7 @@
   ],
   "presets": [
     {
-      "name": "Image with Text",
+      "name": "Custom Image with Text",
       "category": "Custom",
       "blocks": [
         {
@@ -192,10 +192,11 @@
 }
 {% endschema %}
 
-{% javascript %}
+<script type="text/javascript">
   const baseEventHandler = () => {
-    document.querySelectorAll('.collapsible-trigger[type="button"]').forEach((elem) => {
-      elem.addEventListener('click', () => {
+    document.querySelectorAll('.collapsible-trigger--{{section.id}}').forEach((elem) => {
+      elem.addEventListener('click', (e) => {
+        e.stopPropagation();
         const expanded = elem.getAttribute('aria-expanded');
         const collapsibleBody = document.getElementById(`${elem.getAttribute('aria-controls')}`);
 
@@ -215,7 +216,8 @@
   };
 
   document.addEventListener('DOMContentLoaded', baseEventHandler);
-{% endjavascript %}
+</script>
+
 <style>
   :root {
     --typeHeaderPrimary: Montserrat;
