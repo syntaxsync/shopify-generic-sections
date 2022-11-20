@@ -1,0 +1,537 @@
+<div class="tw-flex tw-flex-col-reverse lg:tw-flex-row">
+  {% capture image_layout %}
+    <div class="tw-tw-full lg:tw-w-1/2 tw-relative tw-min-h-50vh loaded custom-image-layout-section">
+      <img
+        loading="lazy"
+        class="feature-row__image tw-absolute tw-w-full tw-h-full tw-inset-0 tw-object-cover tw-object-center lazyautosizes lazyloaded"
+        alt="{{ section.settings.image.alt | escape }}"
+        src="{{ section.settings.image.src }}"
+        width="{{ image.width }}"
+        height="{{ image.height }}"
+      >
+    </div>
+  {% endcapture %}
+
+  {% if section.settings.layout == 'left' %}
+    {{ image_layout }}
+  {% endif %}
+
+  <div class="tw-w-full lg:tw-w-1/2 tw-py-5 md:tw-py-10 lg:tw-py-20 tw-px-5 md:tw-px-10">
+    <div
+      class="feature-row__item feature-row__text feature-row__text--right text-left aos-init aos-animate"
+      data-aos=""
+    >
+      {%- if section.settings.subheading -%}
+        <div class="subheading appear-delay">{{- section.settings.subheading -}}</div>
+      {%- endif -%}
+
+      {%- if section.settings.heading -%}
+        <div class="spr-header-title appear-delay-1">{{- section.settings.heading -}}</div>
+      {%- endif -%}
+
+      <div class="rte appear-delay-2">
+        {{- section.settings.body -}}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="tw-mt-4">
+          {%- for block in section.blocks -%}
+            <div>
+              <div itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+                <button
+                  type="button"
+                  class="collapsible-trigger collapsible-trigger--inline collapsible--auto-height text-left {% if block.settings.open %}is-open{% endif %}"
+                  aria-controls="FAQ-content-{{ block.id }}"
+                  aria-expanded="{{ block.settings.open }}"
+                >
+                  <span
+                    class="collapsible-trigger__icon collapsible-trigger__icon--open"
+                    role="presentation"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      role="presentation"
+                      class="icon icon-plus"
+                      viewBox="0 0 20 20"
+                    >
+                      <path fill="#444"
+                          d="M17.409 8.929h-6.695V2.258c0-.566-.506-1.029-1.071-1.029s-1.071.463-1.071 1.029v6.671H1.967C1.401 8.929.938 9.435.938 10s.463 1.071 1.029 1.071h6.605V17.7c0 .566.506 1.029 1.071 1.029s1.071-.463 1.071-1.029v-6.629h6.695c.566 0 1.029-.506 1.029-1.071s-.463-1.071-1.029-1.071z">
+                      </path>
+                    </svg>
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      role="presentation"
+                      class="icon icon-minus"
+                      viewBox="0 0 20 20"
+                    >
+                      <path fill="#444"
+                          d="M17.543 11.029H2.1A1.032 1.032 0 0 1 1.071 10c0-.566.463-1.029 1.029-1.029h15.443c.566 0 1.029.463 1.029 1.029 0 .566-.463 1.029-1.029 1.029z">
+                      </path>
+                    </svg>
+                  </span>
+                  <span itemprop="name" class="tw-font-bold">{{- block.settings.question -}}</span>
+                </button>
+                <div
+                  id="FAQ-content-{{ block.id }}"
+                  class="collapsible-content collapsible-content--all is-transitioning {% if block.settings.open %}is-open{% endif %}"
+                  itemscope=""
+                  itemprop="acceptedAnswer"
+                  itemtype="https://schema.org/Answer"
+                  style="{% if block.settings.open %}height: auto;{% else %}height: 0px;{% endif %}"
+                >
+                  <div
+                    class="collapsible-content__inner collapsible-content__inner--faq rte"
+                    itemprop="text"
+                  >
+                    {{ block.settings.answer }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {% if section.settings.layout == 'right' %}
+    {{ image_layout }}
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Custom Image with Text",
+  "class": "custom-image-with-text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc euismod non nisl in posuere. Cras mollis, nisi et sagittis ornare, ex nunc lacinia ipsum, ac condimentum leo justo auctor quam. Aenean viverra metus turpis, in ultrices nisi semper eget. Mauris imperdiet nisi sed magna rhoncus molestie. Vestibulum magna elit, fermentum ultrices imperdiet a, pellentesque et urna. Aliquam in pulvinar mauris. Donec efficitur, ligula sed interdum pellentesque, diam nisi iaculis nulla, a sagittis ipsum ex a arcu. Duis mattis posuere nunc vitae aliquam.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQs Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Question 1"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc euismod non nisl in posuere. Cras mollis, nisi et sagittis ornare, ex nunc lacinia ipsum, ac condimentum leo justo auctor quam. Aenean viverra metus turpis, in ultrices nisi semper eget. Mauris imperdiet nisi sed magna rhoncus molestie. Vestibulum magna elit, fermentum ultrices imperdiet a, pellentesque et urna. Aliquam in pulvinar mauris. Donec efficitur, ligula sed interdum pellentesque, diam nisi iaculis nulla, a sagittis ipsum ex a arcu. Duis mattis posuere nunc vitae aliquam.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Default Open",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with Text",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+  const baseEventHandler = () => {
+    document.querySelectorAll('.collapsible-trigger[type="button"]').forEach((elem) => {
+      elem.addEventListener('click', () => {
+        const expanded = elem.getAttribute('aria-expanded');
+        const collapsibleBody = document.getElementById(`${elem.getAttribute('aria-controls')}`);
+
+        if (expanded === 'true') {
+          elem.setAttribute('aria-expanded', 'false');
+          elem.classList.remove('is-open');
+          collapsibleBody.classList.remove('is-open');
+          collapsibleBody.style.height = '0px';
+        } else {
+          elem.setAttribute('aria-expanded', 'true');
+          elem.classList.add('is-open');
+          collapsibleBody.classList.add('is-open');
+          collapsibleBody.style.height = 'auto';
+        }
+      });
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', baseEventHandler);
+{% endjavascript %}
+<style>
+  :root {
+    --typeHeaderPrimary: Montserrat;
+    --typeHeaderFallback: sans-serif;
+    --typeHeaderSize: 40px;
+    --typeHeaderStyle: normal;
+    --typeHeaderWeight: 600;
+    --typeHeaderLineHeight: 1.2;
+    --typeHeaderSpacing: 0em;
+    --typeBasePrimary: Montserrat;
+    --typeBase2Primary: Montserrat;
+    --typeBaseFallback: sans-serif;
+    --typeBaseSize: 16px;
+    --typeBaseWeight: 300;
+    --typeBaseStyle: normal;
+    --typeBaseSpacing: 0em;
+    --typeBaseLineHeight: 1.6;
+    --buttonRadius: 0px;
+    --iconWeight: 5px;
+    --iconLinecaps: miter;
+  }
+
+  [data-animate_images='true'] [class*='appear-delay'] {
+    opacity: 0;
+    transform: translate3d(0, 15px, 0);
+    transition: opacity 0.6s cubic-bezier(0.04, 0, 0.2, 1), transform 0.6s cubic-bezier(0.04, 0, 0.2, 1);
+  }
+
+  [data-animate_images='true'] .aos-animate [class*='appear-delay'] {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+
+  .spr-header-title,
+  h1 {
+    font-size: calc(var(--typeHeaderSize) * 1 * 0.85);
+  }
+
+  @media only screen and (min-width: 769px) {
+    .spr-header-title,
+    h1 {
+      font-size: calc(var(--typeHeaderSize) * 1);
+    }
+  }
+
+  .tw-absolute {
+    position: absolute;
+  }
+
+  .tw-relative {
+    position: relative;
+  }
+
+  .tw-inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .tw-mt-4 {
+    margin-top: 1rem;
+  }
+
+  .tw-flex {
+    display: flex;
+  }
+
+  .tw-h-full {
+    height: 100%;
+  }
+
+  .tw-min-h-50vh {
+    min-height: 50vh;
+  }
+
+  .tw-w-full {
+    width: 100%;
+  }
+
+  .tw-flex-col-reverse {
+    flex-direction: column-reverse;
+  }
+
+  .tw-object-cover {
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+
+  .tw-object-center {
+    -o-object-position: center;
+    object-position: center;
+  }
+
+  .tw-px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .tw-py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .tw-font-bold {
+    font-weight: 700;
+  }
+
+  *,
+  ::before,
+  ::after {
+    --tw-shadow: 0 0 #0000;
+  }
+
+  *,
+  ::before,
+  ::after {
+    --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgba(59, 130, 246, 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+  }
+
+  @media (min-width: 768px) {
+    .md\:tw-px-10 {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+
+    .md\:tw-py-10 {
+      padding-top: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lg\:tw-w-1\/2 {
+      width: 50%;
+    }
+
+    .lg\:tw-flex-row {
+      flex-direction: row;
+    }
+
+    .lg\:tw-py-20 {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+  }
+
+  .collapsible-trigger {
+    color: inherit;
+    display: block;
+    border-top: 1px solid #f1f1f1;
+    width: 100%;
+    position: relative;
+    border: 0;
+    text-align: left;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .collapsible-trigger__icon {
+    display: block;
+    position: absolute;
+    right: 0;
+
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    transform: translateY(-50%);
+  }
+
+  .collapsible-trigger__icon .icon {
+    display: block;
+    width: 12px;
+    height: 12px;
+    transition: all 0.1s ease-in;
+  }
+
+  .collapsible-trigger--inline {
+    padding: 11px 0 11px 11px;
+    font-weight: bold;
+  }
+
+  .collapsible-trigger--inline .collapsible-trigger__icon {
+    right: 0;
+    left: auto;
+  }
+
+  .collapsible-trigger__icon--circle {
+    border: 2px solid;
+    border-color: #000000;
+    border-color: var(--colorTextBody);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+  }
+
+  .collapsible-trigger__icon--circle .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .collapsible-trigger.is-open .collapsible-trigger__icon > .icon-chevron-down {
+    transform: scaleY(-1);
+  }
+
+  .collapsible-trigger .collapsible-trigger__icon .icon-minus,
+  .collapsible-trigger.is-open .collapsible-trigger__icon .icon-plus {
+    display: none;
+  }
+
+  .collapsible-trigger.is-open .collapsible-trigger__icon .icon-minus {
+    display: block;
+  }
+
+  .collapsible-content {
+    transition: opacity 0s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .collapsible-content.is-open {
+    visibility: visible;
+    opacity: 1;
+    padding-left: 11px;
+    transition: opacity 0s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .collapsible-content--all {
+    visibility: hidden;
+    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    opacity: 0;
+    height: 0;
+  }
+
+  .collapsible-content--all .collapsible-content__inner {
+    transform: translateY(15px);
+  }
+
+  .collapsible-content--all .collapsible-content__inner--no-translate {
+    transform: translateY(0);
+  }
+
+  @media only screen and (max-width: 768px) {
+    .collapsible-content--small {
+      visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      opacity: 0;
+      height: 0;
+    }
+
+    .collapsible-content--small .collapsible-content__inner {
+      transform: translateY(40px);
+    }
+
+    .collapsible-content--small .collapsible-content__inner--no-translate {
+      transform: translateY(0);
+    }
+  }
+
+  .collapsible-content__inner {
+    opacity: 0;
+    transition: transform 0s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .is-open .collapsible-content__inner {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s cubic-bezier(0.04, 0, 0.2, 1), transform 0.4s cubic-bezier(0.04, 0, 0.2, 1);
+  }
+
+  .rte.collapsible-content__inner--faq {
+    padding-bottom: 40px;
+  }
+
+  .collapsible-trigger[aria-expanded='true'] .collapsible-label__closed {
+    display: none;
+  }
+
+  .collapsible-label__open {
+    display: none;
+  }
+
+  .collapsible-trigger[aria-expanded='true'] .collapsible-label__open {
+    display: inline-block;
+  }
+
+  .subheading {
+    font-size: calc(var(--typeBaseSize) - 3px);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .subheading {
+      font-size: calc(var(--typeBaseSize) - 5px);
+      margin-bottom: 15px;
+    }
+  }
+  .custom-image-with-text {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .custom-image-layout-section {
+      order: 1;
+    }
+  }
+</style>
