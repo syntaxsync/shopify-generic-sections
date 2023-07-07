@@ -1,0 +1,1323 @@
+{% comment %}
+  Developed By Imran Munir
+  Contact Me on whatsapp: +923126171650
+{% endcomment %}
+
+<script
+  src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+  crossorigin="anonymous"
+></script>
+
+<style>
+  /* The hero image */
+  .custom-hero-image--{{ section.id }} {
+    /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url({{section.settings.background-image|img_url:'1000x1000'}});
+
+    /* Set a specific height */
+    min-height: 700px;
+
+    /* Position and center the image to scale nicely on all screens */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+
+  /* Place text in the middle of the image */
+  .custom-hero-text {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: {{ section.settings.title-color }} !important;
+    min-width: 60%;
+  }
+
+  @media (max-width: 765px) {
+    .custom-hero-text {
+      width: 100%;
+    }
+  }
+
+  .custom-hero-title--{{ section.id }} {
+    color: {{ section.settings.title-color }} !important;
+  }
+
+  .custom-hero-details--{{ section.id }} {
+    color: {{ section.settings.details-color }} !important;
+  }
+
+  /* custom custom-questionare design */
+  .custom-questionare {
+    padding: 20px;
+    margin: 20px;
+    display: none;
+  }
+
+  .custom-questionare-step {
+    display: none;
+  }
+
+  .custom-questionare-step.active {
+    display: block;
+  }
+
+  .start-form-questioniare {
+    float: none !important;
+  }
+
+  #heading {
+    text-transform: uppercase;
+    color: #673ab7;
+    font-weight: normal;
+  }
+
+  #msform--{{ section.id }} {
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  #msform--{{ section.id }} fieldset {
+    border: 0 none;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 20px;
+    position: relative;
+  }
+
+
+  #msform--{{ section.id }} fieldset:not(:first-of-type) {
+    display: none;
+  }
+
+  #msform--{{ section.id }} {
+    color: #000;
+  }
+
+  #msform--{{ section.id }} input[type='text'],
+  #msform--{{ section.id }} input[type='email'],
+  #msform--{{ section.id }} textarea {
+    padding: 8px 15px 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 25px px;
+    margin-top: 25px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat;
+    color: #2c3e50;
+    background-color: #eceff1;
+    font-size: 16px;
+    letter-spacing: 1px;
+    border-radius: 15px;
+  }
+
+  #msform--{{ section.id }} input:focus,
+  #msform--{{ section.id }} textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #673ab7;
+    outline-width: 0;
+  }
+
+  .previous {
+    float: left;
+  }
+
+  .next {
+    float: right;
+  }
+
+  .previous svg {
+    margin-right: 5px;
+  }
+
+  .next svg {
+    margin-left: 5px;
+  }
+
+  .custom-card {
+    z-index: 0;
+    border: none;
+    position: relative;
+  }
+
+  .fs-title {
+    font-size: 25px;
+    margin-bottom: 15px;
+    font-weight: normal;
+  }
+
+  .purple-text {
+    color: #673ab7;
+    font-weight: normal;
+  }
+
+  .steps {
+    font-size: 25px;
+    color: gray;
+    margin-bottom: 10px;
+    font-weight: normal;
+    text-align: right;
+  }
+
+  .fieldlabels {
+    color: gray;
+    text-align: left;
+  }
+
+  .fit-image {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  #msform--{{ section.id }} .multi-form-grid {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    justify-content: center;
+  }
+
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option {
+    box-sizing: border-box;
+  }
+
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='radio'],
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option .single-checkbox {
+    display: none;
+  }
+
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option .picture-options img {
+    width: 100px;
+    min-width: 100px;
+    min-height: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 0.5px solid #ccc;
+    padding: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option .picture-options span {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    margin-top: 2px;
+    width: 70px;
+    text-align: center;
+    background: transparent;
+    color: black;
+    font-size: 12px;
+  }
+
+  #msform--{{ section.id }} .multi-step-option-with-textarea,
+  #msform--{{ section.id }} .multi-form-checkbox {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  #msform--{{ section.id }} .multi-form-option-details {
+    max-width: 120px;
+    line-height: normal;
+    line-break: auto;
+    margin-top: 0;
+  }
+
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='radio']:checked + .picture-options img,
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='radio']:checked + .picture-options:hover img,
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='checkbox']:checked + .picture-options img,
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='checkbox']:checked + .picture-options:hover img {
+    border: 1px solid rgba(var(--color-button),var(--alpha-button-background));
+  }
+
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='radio']:checked + .picture-options span,
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='radio']:checked + .picture-options:hover span,
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='checkbox']:checked + .picture-options span,
+  #msform--{{ section.id }} .multi-form-grid .multi-form-option input[type='checkbox']:checked + .picture-options:hover span {
+    background: rgba(var(--color-button),var(--alpha-button-background));
+    color: #fff;
+  }
+
+  #msform--{{ section.id }} .multi-form-grid-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    box-sizing: content-box;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+
+  #msform--{{ section.id }} .multi-form-radio,
+  #msform--{{ section.id }} .multi-form-checkbox {
+    width: auto;
+    display: inline-block;
+    }
+
+    #msform--{{ section.id }} .multi-form-radio {
+      display: inline-block;
+      width: calc(25% - 5px);
+      text-align: left;
+    }
+
+  #msform--{{ section.id }} .multi-form-radio input[type='radio'],
+  #msform--{{ section.id }} .multi-form-checkbox input[type='checkbox'] {
+    width: auto;
+  }
+
+  #msform--{{ section.id }} .fit-image-option {
+    width: 180px;
+    margin: 0 auto;
+  }
+
+  #msform--{{ section.id }} .picture-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 10px;
+  }
+
+  #msform--{{ section.id }} .form-status {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+{% if request.design_mode %}
+  {% for block in section.blocks %}
+    <p>{{ block.id }} -- {{ block.settings.title }}</p>
+  {% endfor %}
+{% endif %}
+
+<div class="custom-hero-image custom-hero-image--{{ section.id }} animate--fade-in">
+  <div class="custom-hero-text animate--fade-in">
+    <div class="intro-starting intro-starting--{{section.id}}">
+      <h1 class="custom-hero-title--{{ section.id }}">{{ section.settings.title }}</h1>
+      <div class="custom-hero-details--{{ section.id }}">{{ section.settings.description }}</div>
+      <button class="start-form-questioniare start-form-questioniare--{{ section.id }} button">
+        {{ section.settings.button }}
+      </button>
+    </div>
+
+    <div class="custom-questionare multi-step-quiz-form">
+      <div class="custom-card">
+        {% assign form_id = 'msform--' | append: section.id %}
+        {%- form 'contact', id: form_id, class: 'isolate scroll-trigger animate--slide-in' -%}
+          {%- if form.posted_successfully? -%}
+            <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+              {% render 'icon-success' %}
+              {{ 'templates.contact.form.post_success' | t }}
+            </h2>
+          {%- endif -%}
+
+          {%- for block in section.blocks -%}
+            <fieldset id="{{ block.id }}">
+              <div class="form-custom-card">
+                <div class="row">
+                  <div class="col-7">
+                    {%- if block.settings.title -%}
+                      <h2 class="fs-title">{{ block.settings.title }}</h2>
+                    {%- endif -%}
+
+                    {%- if block.settings.description -%}
+                      <div>{{ block.settings.description }}</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+                {%- case block.type -%}
+                  {%- when 'option-with-images' -%}
+                    <div class="multi-form-grid">
+                      {% for i in (1..15) %}
+                        {%- assign option_image_key = 'option_image_' | append: i -%}
+                        {%- assign option_value_key = 'option_title_' | append: i -%}
+                        {%- assign go_to_key = 'go_to_block_' | append: i -%}
+
+                        {%- assign option_image = block.settings[option_image_key] -%}
+                        {%- assign option_value = block.settings[option_value_key] -%}
+                        {%- assign goto_value = block.settings[go_to_key] -%}
+
+                        {%- if option_image and option_value -%}
+                          <div class="multi-form-option">
+                            <input
+                              type="radio"
+                              name="contact[{{ block.settings.title }}]"
+                              id="{{ option_value | handleize }}"
+                              data-target-block="{{ goto_value }}"
+                              required
+                            >
+                            <label class="picture-options" for="{{ option_value | handleize }}">
+                              {%- if option_image -%}
+                                <img
+                                  src="{{ option_image | img_url: '150x150' }}"
+                                  class="fit-image"
+                                  width="100"
+                                  height="100"
+                                >
+                              {%- endif -%}
+                              {%- if option_value -%}
+                                <span class="button">{{ option_value }}</span>
+                              {%- endif -%}
+                            </label>
+                          </div>
+                        {%- endif -%}
+                      {% endfor %}
+                    </div>
+
+                  {%- when 'multi-select-option' -%}
+                    <div class="multi-form-grid">
+                      {% for i in (1..16) %}
+                        {%- assign option_image_key = 'option_image_' | append: i -%}
+                        {%- assign option_value_key = 'option_title_' | append: i -%}
+                        {%- assign option_details_key = 'option_details_' | append: i -%}
+
+                        {%- assign option_image = block.settings[option_image_key] -%}
+                        {%- assign option_value = block.settings[option_value_key] -%}
+                        {%- assign option_details = block.settings[option_details_key] -%}
+
+                        {%- if option_image and option_value -%}
+                          <div class="multi-form-option">
+                            <input
+                              type="checkbox"
+                              name="contact[{{ block.settings.title }} - {{ forloop.index }}]"
+                              class="single-checkbox"
+                              id="{{ option_value | handleize }}"
+                              data-limit="{{ block.settings.option_count }}"
+                              data-target-block="{{ block.settings.go_to_block }}"
+                            >
+                            <label class="picture-options picture-option-checkbox" for="{{ option_value | handleize }}">
+                              {%- if option_image -%}
+                                <img
+                                  src="{{ option_image | img_url: '150x150' }}"
+                                  class="fit-image"
+                                  width="100"
+                                  height="100"
+                                >
+                              {%- endif -%}
+                              {%- if option_value -%}
+                                <span class="button">{{ option_value }}</span>
+                              {%- endif -%}
+                              {% if option_details %}
+                                <p class="multi-form-option-details">{{ option_details }}</p>
+                              {% endif %}
+                            </label>
+                          </div>
+                        {%- endif -%}
+                      {% endfor %}
+                    </div>
+
+                  {%- when 'option-with-textarea' -%}
+                    <div class="multi-step-option-with-textarea">
+                      {%- if block.settings.image -%}
+                        <div class="fit-image-option">
+                          <img
+                            src="{{ block.settings.image | img_url: '220x' }}"
+                            alt="{{ block.settings.title }}"
+                            class="fit-image"
+                          >
+                        </div>
+                      {%- endif -%}
+
+                      {% if block.settings.input_type == 'textarea' %}
+                        <textarea
+                          rows="3"
+                          class="multi-form-textarea"
+                          name="contact[{{ block.settings.title }}]"
+                          placeholder="{{ block.settings.placeholder }}"
+                          data-target-block="{{ block.settings.go_to_block }}"
+                        ></textarea>
+                      {% elsif block.settings.input_type == 'text' %}
+                        <input
+                          type="text"
+                          name="contact[{{ block.settings.title }}]"
+                          placeholder="{{ block.settings.placeholder }}"
+                          data-target-block="{{ block.settings.go_to_block }}"
+                        >
+                      {% endif %}
+                    </div>
+
+                  {%- when 'option-with-radios' -%}
+                    {%- assign option_values = block.settings.options | newline_to_br | split: '<br />' -%}
+                    <div class="multi-form-grid-wrap">
+                      {%- for option_value in option_values -%}
+                        <div class="multi-form-radio">
+                          <input
+                            type="radio"
+                            name="contact[{{ block.settings.title }}]"
+                            id="{{ option_value | handleize }}"
+                            data-target-block="{{ block.settings.go_to_block }}"
+                            required
+                          >
+                          <label for="{{ option_value | handleize }}">{{ option_value }}</label>
+                        </div>
+                      {%- endfor -%}
+                    </div>
+
+                  {%- when 'option-with-checkboxes' -%}
+                    <div>
+                      <div class="contact__fields">
+                        <div class="email">
+                          <input type="email" name="contact[email]" id="email" placeholder="email">
+                        </div>
+
+                        <div class="message">
+                          <textarea row="3" name="contact[body]" id="message" placeholder="message"></textarea>
+                        </div>
+                      </div>
+                      <div class="multi-form-checkbox">
+                        <input
+                          data-target-block="{{ block.settings.go_to_block }}"
+                          type="checkbox"
+                          required
+                          name="contact[{{ block.settings.title }}]"
+                          id="{{ block.id }}"
+                        >
+                        <label for="{{ block.id }}">{{ block.settings.options }}</label>
+                      </div>
+                    </div>
+                {%- endcase -%}
+              </div>
+              <div class="multi-form-navigation">
+                {%- unless forloop.first -%}
+                  <button
+                    type="button"
+                    class="previous button"
+                    name="previous"
+                  >
+                    {% render 'previous-icon' %}
+                    <span>Previous</span>
+                  </button>
+                {%- endunless -%}
+
+                {% unless forloop.last %}
+                  <button
+                    type="button"
+                    class="next button"
+                    name="next"
+                    id="action-{{ block.id }}"
+                    disabled
+                  >
+                    <span>Next</span>
+                    {% render 'next-icon' %}
+                  </button>
+                {% else %}
+                  <input type="submit" value="Submit" class="next button">
+                {% endunless %}
+              </div>
+            </fieldset>
+          {%- endfor -%}
+          <fieldset>
+            <h3>thank you for completing our quiz!</h3>
+            <h2>We can't wait to start making your personalised scent</h2>
+          </fieldset>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script defer>
+  $(document).ready(function () {
+    var current_fs, next_fs, previous_fs, opacity;
+
+    $('.start-form-questioniare--{{ section.id }}').on('click', function () {
+      $('.intro-starting--{{section.id }}').hide();
+
+      const $heroImage = $('.custom-hero-image--{{ section.id }}');
+      $heroImage.css({
+        'background-color': '{{ section.settings.background-color }}',
+        'background-image': 'none',
+      });
+
+      $('.custom-questionare').show();
+    });
+
+    $('.next').click(function () {
+      const target_block_id = $(this).attr('data-target-block');
+      current_fs = $(this).closest('fieldset');
+
+      if (target_block_id) {
+        next_fs = $('#' + target_block_id);
+        next_fs.find('.previous.button').attr('data-target-block', current_fs.attr('id'));
+      } else {
+        next_fs = $(this).closest('fieldset').next();
+      }
+
+      //show the next fieldset
+      next_fs.show();
+      //hide the current fieldset with style
+      current_fs.animate(
+        { opacity: 0 },
+        {
+          step: function (now) {
+            // for making fielset appear animation
+            opacity = 1 - now;
+
+            current_fs.css({
+              display: 'none',
+              position: 'relative',
+            });
+            next_fs.css({ opacity: opacity });
+          },
+          duration: 500,
+        }
+      );
+    });
+
+    $('.previous').click(function () {
+      const target_block_id = $(this).attr('data-target-block');
+
+      current_fs = $(this).closest('fieldset');
+
+      if (target_block_id) {
+        previous_fs = $('#' + target_block_id);
+      } else {
+        previous_fs = $(this).closest('fieldset').prev();
+      }
+
+      //show the previous fieldset
+      previous_fs.show();
+
+      //hide the current fieldset with style
+      current_fs.animate(
+        { opacity: 0 },
+        {
+          step: function (now) {
+            // for making fielset appear animation
+            opacity = 1 - now;
+
+            current_fs.css({
+              display: 'none',
+              position: 'relative',
+            });
+            previous_fs.css({ opacity: opacity });
+          },
+          duration: 500,
+        }
+      );
+    });
+
+    $('#msform--{{ section.id }} input, #msform--{{ section.id }} textarea').on('change', function (event) {
+      event.preventDefault();
+      const $actionButton = $(this).closest('fieldset').find('.next.button');
+
+      const blockId = $(this).attr('data-target-block');
+
+      if (blockId) {
+        $actionButton.attr('data-target-block', blockId);
+      } else {
+        $actionButton.removeAttr('data-target-block');
+      }
+
+      if ($(this).val()) {
+        $actionButton.prop('disabled', false);
+      } else {
+        $actionButton.prop('disabled', true);
+      }
+    });
+
+    $('input.single-checkbox').on('change', function (evt) {
+      const limit = parseInt($(this).attr('data-limit'));
+      if ($('input.single-checkbox:checked').length > limit) {
+        this.checked = false;
+      }
+    });
+
+    $('#msform--{{ section.id }}').on('submit', function () {
+      console.log(this);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Questionare",
+  "class": "shopify-section",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "color",
+      "id": "title-color",
+      "label": "Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "details-color",
+      "label": "Details Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background-color",
+      "label": "Background Color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "want to create your own one-of-a-kind scent? your personalised candle is waiting"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p></p>"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button",
+      "default": "Get Started"
+    },
+    {
+      "type": "image_picker",
+      "id": "background-image",
+      "label": "Background Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "option-with-images",
+      "name": "Option with images",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_1",
+          "label": "Option Image 1"
+        },
+        {
+          "type": "text",
+          "id": "option_title_1",
+          "label": "Option Title 1"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_1",
+          "label": "Go to block 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_2",
+          "label": "Option Image 2"
+        },
+        {
+          "type": "text",
+          "id": "option_title_2",
+          "label": "Option Title 2"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_2",
+          "label": "Go to block 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_3",
+          "label": "Option Image 3"
+        },
+        {
+          "type": "text",
+          "id": "option_title_3",
+          "label": "Option Title 3"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_3",
+          "label": "Go to block 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_4",
+          "label": "Option Image 4"
+        },
+        {
+          "type": "text",
+          "id": "option_title_4",
+          "label": "Option Title 4"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_4",
+          "label": "Go to block 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_5",
+          "label": "Option Image 5"
+        },
+        {
+          "type": "text",
+          "id": "option_title_5",
+          "label": "Option Title 5"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_5",
+          "label": "Go to block 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_6",
+          "label": "Option Image 6"
+        },
+        {
+          "type": "text",
+          "id": "option_title_6",
+          "label": "Option Title 6"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_6",
+          "label": "Go to block 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_7",
+          "label": "Option Image 7"
+        },
+        {
+          "type": "text",
+          "id": "option_title_7",
+          "label": "Option Title 7"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_7",
+          "label": "Go to block 7"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_8",
+          "label": "Option Image 8"
+        },
+        {
+          "type": "text",
+          "id": "option_title_8",
+          "label": "Option Title 8"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_8",
+          "label": "Go to block 8"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_9",
+          "label": "Option Image 9"
+        },
+        {
+          "type": "text",
+          "id": "option_title_9",
+          "label": "Option Title 9"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_9",
+          "label": "Go to block 9"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_10",
+          "label": "Option Image 10"
+        },
+        {
+          "type": "text",
+          "id": "option_title_10",
+          "label": "Option Title 10"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_10",
+          "label": "Go to block 10"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_11",
+          "label": "Option Image 11"
+        },
+        {
+          "type": "text",
+          "id": "option_title_11",
+          "label": "Option Title 11"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_11",
+          "label": "Go to block 11"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_12",
+          "label": "Option Image 12"
+        },
+        {
+          "type": "text",
+          "id": "option_title_12",
+          "label": "Option Title 12"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_12",
+          "label": "Go to block 12"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_13",
+          "label": "Option Image 13"
+        },
+        {
+          "type": "text",
+          "id": "option_title_13",
+          "label": "Option Title 13"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_13",
+          "label": "Go to block 13"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_14",
+          "label": "Option Image 14"
+        },
+        {
+          "type": "text",
+          "id": "option_title_14",
+          "label": "Option Title 14"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_14",
+          "label": "Go to block 14"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_15",
+          "label": "Option Image 15"
+        },
+        {
+          "type": "text",
+          "id": "option_title_15",
+          "label": "Option Title 15"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block_15",
+          "label": "Go to block 15"
+        }
+      ]
+    },
+    {
+      "type": "multi-select-option",
+      "name": "Multi Select Option image",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Goto block"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block",
+          "label": "Go to block"
+        },
+        {
+          "type": "range",
+          "id": "option_count",
+          "label": "Max Option to Select",
+          "min": 1,
+          "max": 16,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_1",
+          "label": "Option Image 1"
+        },
+        {
+          "type": "text",
+          "id": "option_title_1",
+          "label": "Option Title 1"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_1",
+          "label": "Option Details 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_2",
+          "label": "Option Image 2"
+        },
+        {
+          "type": "text",
+          "id": "option_title_2",
+          "label": "Option Title 2"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_2",
+          "label": "Option Details 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_3",
+          "label": "Option Image 3"
+        },
+        {
+          "type": "text",
+          "id": "option_title_3",
+          "label": "Option Title 3"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_3",
+          "label": "Option Details 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_4",
+          "label": "Option Image 4"
+        },
+        {
+          "type": "text",
+          "id": "option_title_4",
+          "label": "Option Title 4"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_4",
+          "label": "Option Details 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_5",
+          "label": "Option Image 5"
+        },
+        {
+          "type": "text",
+          "id": "option_title_5",
+          "label": "Option Title 5"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_5",
+          "label": "Option Details 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_6",
+          "label": "Option Image 6"
+        },
+        {
+          "type": "text",
+          "id": "option_title_6",
+          "label": "Option Title 6"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_6",
+          "label": "Option Details 6"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_7",
+          "label": "Option Image 7"
+        },
+        {
+          "type": "text",
+          "id": "option_title_7",
+          "label": "Option Title 7"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_7",
+          "label": "Option Details 7"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_8",
+          "label": "Option Image 8"
+        },
+        {
+          "type": "text",
+          "id": "option_title_8",
+          "label": "Option Title 8"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_8",
+          "label": "Option Details 8"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_9",
+          "label": "Option Image 9"
+        },
+        {
+          "type": "text",
+          "id": "option_title_9",
+          "label": "Option Title 9"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_9",
+          "label": "Option Details 9"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_10",
+          "label": "Option Image 10"
+        },
+        {
+          "type": "text",
+          "id": "option_title_10",
+          "label": "Option Title 10"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_10",
+          "label": "Option Details 10"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_11",
+          "label": "Option Image 11"
+        },
+        {
+          "type": "text",
+          "id": "option_title_11",
+          "label": "Option Title 11"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_11",
+          "label": "Option Details 11"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_12",
+          "label": "Option Image 12"
+        },
+        {
+          "type": "text",
+          "id": "option_title_12",
+          "label": "Option Title 12"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_12",
+          "label": "Option Details 12"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_13",
+          "label": "Option Image 13"
+        },
+        {
+          "type": "text",
+          "id": "option_title_13",
+          "label": "Option Title 13"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_13",
+          "label": "Option Details 13"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_14",
+          "label": "Option Image 14"
+        },
+        {
+          "type": "text",
+          "id": "option_title_14",
+          "label": "Option Title 14"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_14",
+          "label": "Option Details 14"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_15",
+          "label": "Option Image 15"
+        },
+        {
+          "type": "text",
+          "id": "option_title_15",
+          "label": "Option Title 15"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_15",
+          "label": "Option Details 15"
+        },
+        {
+          "type": "image_picker",
+          "id": "option_image_16",
+          "label": "Option Image 16"
+        },
+        {
+          "type": "text",
+          "id": "option_title_16",
+          "label": "Option Title 16"
+        },
+        {
+          "type": "textarea",
+          "id": "option_details_16",
+          "label": "Option Details 16"
+        }
+      ]
+    },
+    {
+      "type": "option-with-textarea",
+      "name": "Option with text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "input_type",
+          "label": "input_type",
+          "options": [
+            {
+              "value": "textarea",
+              "label": "Textarea"
+            },
+            {
+              "value": "text",
+              "label": "Text"
+            }
+          ],
+          "default": "textarea"
+        },
+        {
+          "type": "text",
+          "id": "go_to_block",
+          "label": "Go to block"
+        }
+      ]
+    },
+    {
+      "type": "option-with-radios",
+      "name": "Option with radios",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "textarea",
+          "id": "options",
+          "label": "Options",
+          "info": "Enter each option on a new line."
+        },
+        {
+          "type": "text",
+          "id": "go_to_block",
+          "label": "Go to block"
+        }
+      ]
+    },
+    {
+      "type": "option-with-checkboxes",
+      "name": "Option with checkboxes",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "options",
+          "label": "Options",
+          "info": "Enter each option on a new line."
+        },
+        {
+          "type": "text",
+          "id": "go_to_block",
+          "label": "Go to block"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Questionare"
+    }
+  ]
+}
+{% endschema %}
